@@ -99,8 +99,8 @@ h1, h2, h3 {
 }
 
 .recensione-card .stars {
-    color: #CC8400; /* Era #FFB800 - troppo chiaro */
-    font-size: 1.2rem;
+    color: #9F6000;
+    font-size: 1.25rem;
     letter-spacing: 1px;
 }
 
@@ -272,13 +272,19 @@ h1, h2, h3 {
 }
 
 .footer-sezione a:hover {
-    color: #0056B3; /* Era #007BFF - troppo chiaro */
+    color: #4da3ff; /* colore hover dei link */
     text-decoration: none;
-    transition: color 0.3s;
+}
+
+/* Link generali per accessibilità */
+a {
+    color: #0051A5;
+    text-decoration: none;
 }
 
 a:hover {
-    color: #003D82; /* Scurisce ulteriormente al hover */
+    color: #003D82;
+    text-decoration: underline;
 }
 
 .map-container iframe {
