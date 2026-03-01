@@ -8,41 +8,6 @@
     --hero-grad-2: #e9f3ff;
 }
 
-/* Dark mode */
-body.dark-mode {
-    --bg: #243254;
-    --text: #e2e8f0;
-    --card-bg: #324775c8;
-    --border: #4a5a72;
-    --hero-grad-1: #394e80;
-    --hero-grad-2: #1e293b;
-}
-body.dark-mode .bg-white {
-    background-color: #324775c8 !important;
-}
-
-body.dark-mode .form-control,
-body.dark-mode .form-control:focus {
-    background-color: #4c618fc8;
-    color: var(--text);
-    border: 1px solid var(--border);
-}
-
-body.dark-mode .sezione.bg-white h5,
-body.dark-mode .sezione.bg-white p {
-    color: #ffffff;
-}
-
-/* Style and transitions */
-
-body,
-body * {
-    transition:
-        background-color 0.35s ease,
-        color 0.35s ease,
-        border-color 0.35s ease;
-}
-
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg);
@@ -224,19 +189,6 @@ h1, h2, h3 {
     width: 40%;
 }
 
-body.dark-mode .orari-table {
-    background-color: var(--card-bg);
-    color: var(--text);
-}
-
-body.dark-mode .orari-table td {
-    border-color: var(--border);
-}
-
-body.dark-mode .orari-table .table-secondary {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-}
-
 /* ==============================
    FOOTER MIGLIORATO
 ============================== */
@@ -267,29 +219,6 @@ body.dark-mode .orari-table .table-secondary {
 
 .footer-sezione hr {
     opacity: 0.2;
-}
-
-/* ===== DARK MODE FOOTER ===== */
-body.dark-mode .footer-sezione {
-    background-color: var(--card-bg); /* card-bg scuro della dark mode */
-}
-body.dark-mode .footer-sezione h6,
-body.dark-mode .footer-sezione p,
-body.dark-mode .footer-sezione .text-secondary,
-body.dark-mode .footer-sezione .small {
-    color: #ffffff !important; /* tutti i testi bianchi */
-}
-
-body.dark-mode .footer-sezione a.footer-social {
-    color: #ffffff; /* icone social bianche su dark bg */
-}
-
-body.dark-mode .footer-sezione a.footer-social:hover {
-    color: #4da3ff; /* blu accento hover */
-}
-
-body.dark-mode .footer-sezione hr {
-    border-color: #ffffff; /* linea hr bianca */
 }
 
 /* Cookie Banner Styles */
