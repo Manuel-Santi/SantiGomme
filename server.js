@@ -68,11 +68,11 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://vercel.live"],
         styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://fonts.googleapis.com"],
         fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net"],
         imgSrc: ["'self'", "data:", "blob:", "https:"],
-        connectSrc: ["'self'", "https://cdn.jsdelivr.net/"],
+        connectSrc: ["'self'", "https://cdn.jsdelivr.net/", "https://vercel.live"],
         frameSrc: ["https://www.google.com", "https://maps.google.com"],
         objectSrc: ["'none'"],
         baseUri: ["'self'"],
