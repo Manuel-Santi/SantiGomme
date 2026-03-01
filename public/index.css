@@ -99,8 +99,8 @@ h1, h2, h3 {
 }
 
 .recensione-card .stars {
-    font-size: 1.25rem;
-    color: #FFC107;
+    color: #CC8400; /* Era #FFB800 - troppo chiaro */
+    font-size: 1.2rem;
     letter-spacing: 1px;
 }
 
@@ -162,14 +162,12 @@ h1, h2, h3 {
    CONTATTI
 ============================== */
 
-.box-mappa {
+.map-container {
     background-color: var(--card-bg);
     border: 1px solid var(--border);
-    border-radius: 20px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 350px;
 }
 
 /* Tabella Orari */
@@ -274,6 +272,24 @@ h1, h2, h3 {
 }
 
 .footer-sezione a:hover {
-    color: #4da3ff; /* colore hover dei link */
+    color: #0056B3; /* Era #007BFF - troppo chiaro */
     text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #003D82; /* Scurisce ulteriormente al hover */
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .map-container {
+    height: 300px;
+  }
 }
