@@ -1,20 +1,3 @@
-// Tema Dark/Light 
-const toggleBtn = document.getElementById("toggleTema");
-
-const applyTema = (tema) => {
-    document.body.classList.toggle("dark-mode", tema === "dark");
-    toggleBtn.textContent = tema === "dark" ? "☀️" : "🌙";
-};
-
-// Applica il tema salvato
-applyTema(localStorage.getItem("tema") || "light");
-
-toggleBtn.addEventListener("click", () => {
-    const isDark = document.body.classList.toggle("dark-mode");
-    localStorage.setItem("tema", isDark ? "dark" : "light");
-    toggleBtn.textContent = isDark ? "☀️" : "🌙";
-});
-
 // Cookie Consent 
 (() => {
     const cookieBanner = document.getElementById('cookieBanner');

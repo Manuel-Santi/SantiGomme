@@ -18,6 +18,7 @@ const xss = require("xss");
 const hpp = require("hpp");
 
 const app = express();
+app.set('trust proxy', 1);
 const port = Number(process.env.PORT) || 3000;
 const isProduction = process.env.NODE_ENV === "production";
 const appName = "LA SANTI Gomme srl";
@@ -67,21 +68,33 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://fonts.googleapis.com"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net"],
-        imgSrc: ["'self'", "data:", "blob:", "https:"],
-        connectSrc: ["'self'", "https://cdn.jsdelivr.net/"],
-        frameSrc: ["https://www.google.com", "https://maps.google.com"],
-        objectSrc: ["'none'"],
-        baseUri: ["'self'"],
-        formAction: ["'self'"],
-      },
+        scriptSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://cdn.jsdelivr.net",
+          "https://vercel.live"
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://cdn.jsdelivr.net",
+          "https://fonts.googleapis.com"
+        ],
+        fontSrc: [
+          "'self'",
+          "https://cdn.jsdelivr.net",
+          "https://fonts.gstatic.com"
+        ],
+        imgSrc: ["'self'", "data:", "https://www.gstatic.com"],
+        connectSrc: ["'self'", "https://vercel.live"],
+        frameSrc: [
+          "https://www.google.com",
+          "https://maps.google.com",
+          "https://vercel.live"
+        ]
+      }
     },
-    crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: { policy: "same-site" },
-    hsts: isProduction,
-    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+    crossOriginEmbedderPolicy: false
   })
 );
 

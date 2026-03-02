@@ -8,41 +8,6 @@
     --hero-grad-2: #e9f3ff;
 }
 
-/* Dark mode */
-body.dark-mode {
-    --bg: #243254;
-    --text: #e2e8f0;
-    --card-bg: #324775c8;
-    --border: #4a5a72;
-    --hero-grad-1: #394e80;
-    --hero-grad-2: #1e293b;
-}
-body.dark-mode .bg-white {
-    background-color: #324775c8 !important;
-}
-
-body.dark-mode .form-control,
-body.dark-mode .form-control:focus {
-    background-color: #4c618fc8;
-    color: var(--text);
-    border: 1px solid var(--border);
-}
-
-body.dark-mode .sezione.bg-white h5,
-body.dark-mode .sezione.bg-white p {
-    color: #ffffff;
-}
-
-/* Style and transitions */
-
-body,
-body * {
-    transition:
-        background-color 0.35s ease,
-        color 0.35s ease,
-        border-color 0.35s ease;
-}
-
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg);
@@ -124,6 +89,11 @@ h1, h2, h3 {
     margin: 0 auto 15px auto; /* centra l'immagine e aggiunge spazio sotto */
 }
 
+.card-servizio h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
 /* Reviews */
 
 .recensione-card {
@@ -133,9 +103,14 @@ h1, h2, h3 {
     text-align: left;
 }
 
+.recensione-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
 .recensione-card .stars {
+    color: #9F6000;
     font-size: 1.25rem;
-    color: #FFC107;
     letter-spacing: 1px;
 }
 
@@ -168,14 +143,15 @@ h1, h2, h3 {
 
 /* Why us section */
 
-.sezione h5.highlight {
+.sezione h3.highlight {
     position: relative;
     display: inline-block;
     padding-bottom: 5px;
     margin-bottom: 15px;
+    font-size: 1.25rem;
 }
 
-.sezione h5.highlight::after {
+.sezione h3.highlight::after {
     content: "";
     position: absolute;
     width: 50px;
@@ -197,14 +173,12 @@ h1, h2, h3 {
    CONTATTI
 ============================== */
 
-.box-mappa {
+.map-container {
     background-color: var(--card-bg);
     border: 1px solid var(--border);
-    border-radius: 20px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 350px;
 }
 
 /* Tabella Orari */
@@ -224,19 +198,6 @@ h1, h2, h3 {
     width: 40%;
 }
 
-body.dark-mode .orari-table {
-    background-color: var(--card-bg);
-    color: var(--text);
-}
-
-body.dark-mode .orari-table td {
-    border-color: var(--border);
-}
-
-body.dark-mode .orari-table .table-secondary {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-}
-
 /* ==============================
    FOOTER MIGLIORATO
 ============================== */
@@ -246,8 +207,18 @@ body.dark-mode .orari-table .table-secondary {
     padding: 40px 0;
 }
 
-.footer-sezione h5,
-.footer-sezione h6 {
+.footer-sezione h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-sezione h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer-sezione h3,
+.footer-sezione h4 {
     margin-bottom: 0.5rem;
 }
 
@@ -267,29 +238,6 @@ body.dark-mode .orari-table .table-secondary {
 
 .footer-sezione hr {
     opacity: 0.2;
-}
-
-/* ===== DARK MODE FOOTER ===== */
-body.dark-mode .footer-sezione {
-    background-color: var(--card-bg); /* card-bg scuro della dark mode */
-}
-body.dark-mode .footer-sezione h6,
-body.dark-mode .footer-sezione p,
-body.dark-mode .footer-sezione .text-secondary,
-body.dark-mode .footer-sezione .small {
-    color: #ffffff !important; /* tutti i testi bianchi */
-}
-
-body.dark-mode .footer-sezione a.footer-social {
-    color: #ffffff; /* icone social bianche su dark bg */
-}
-
-body.dark-mode .footer-sezione a.footer-social:hover {
-    color: #4da3ff; /* blu accento hover */
-}
-
-body.dark-mode .footer-sezione hr {
-    border-color: #ffffff; /* linea hr bianca */
 }
 
 /* Cookie Banner Styles */
@@ -347,4 +295,28 @@ body.dark-mode .footer-sezione hr {
 .footer-sezione a:hover {
     color: #4da3ff; /* colore hover dei link */
     text-decoration: none;
+}
+
+/* Link generali per accessibilità */
+a {
+    color: #0051A5;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #003D82;
+    text-decoration: underline;
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .map-container {
+    height: 300px;
+  }
 }
