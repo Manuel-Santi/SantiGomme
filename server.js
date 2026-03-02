@@ -94,11 +94,13 @@ app.use(
           "blob:",
           "https://www.gstatic.com",
           "https://vercel.live",
-          "https://vercel.com"
+          "https://vercel.com",
+          "https://santi-gomme-omega.vercel.app"
         ],
         connectSrc: [
           "'self'",
           "https://vercel.live",
+          "https://cdn.jsdelivr.net",
           "wss://ws-us3.pusher.com"
         ],
         frameSrc: [
