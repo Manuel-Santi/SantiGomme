@@ -407,9 +407,9 @@ Health check endpoint per monitoring.
 - Revoca consenso
 
 ### Note Importanti
-> ⚠️ **Sostituire i dati fittizi** nel footer e nelle pagine legali:
-> - P.IVA: IT00000000000 → inserire P.IVA reale
-> - REA: BS-000000 → inserire numero REA reale
+> ✅ **Dati legali aggiornati:**
+> - P.IVA: IT02950870986
+> - REA: BS-492948
 
 ---
 
