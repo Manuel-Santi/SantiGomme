@@ -21,7 +21,7 @@ FILE: public/index.html
 [ ] Verificare indirizzo: "Via della Scienza, 6, 25039 Travagliato (BS)"
 [ ] Verificare coordinate GPS: lat 45.5337, long 10.0861
 [ ] Verificare telefono: +39 0306864669
-[ ] Verificare email: info@lasantigomme.it
+[ ] Verificare email: info@lasantigommesrl.it
 [ ] Verificare orari apertura nel JSON-LD Schema.org
 
 FILE: public/privacy.html

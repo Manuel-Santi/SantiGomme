@@ -33,7 +33,7 @@ Sito web professionale per **LA SANTI Gomme srl**, gommista situato a Travagliat
 | Ragione Sociale | LA SANTI Gomme srl |
 | Indirizzo | Via della Scienza, 6 - 25039 Travagliato (BS) |
 | Telefono | 0306864669 |
-| Email | info@lasantigomme.it |
+| Email | info@lasantigommesrl.it |
 | Sito Web | https://www.lasantigomme.it |
 
 ### Servizi Offerti
@@ -164,7 +164,7 @@ NODE_ENV=production
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxx
 
 # Email destinatario per i messaggi del form
-EMAIL_USER=info@lasantigomme.it
+EMAIL_USER=info@lasantigommesrl.it
 ```
 
 ### Ottenere API Key Resend
@@ -572,7 +572,7 @@ I log sono in formato JSON per facile parsing:
 ## Supporto
 
 Per assistenza tecnica o domande:
-- **Email**: info@lasantigomme.it
+- **Email**: info@lasantigommesrl.it
 - **Telefono**: 0306864669
 
 ---

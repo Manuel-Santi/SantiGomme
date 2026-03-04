@@ -33,7 +33,7 @@ Crea un file `.env` con:
 PORT=3000
 NODE_ENV=production
 RESEND_API_KEY=re_xxxxx
-EMAIL_USER=info@lasantigomme.it
+EMAIL_USER=info@lasantigommesrl.it
 ```
 
 ## Documentazione
