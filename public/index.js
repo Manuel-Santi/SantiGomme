@@ -110,7 +110,8 @@ form.addEventListener("submit", async (e) => {
     const obj = {
         nome: dati.get("nome"),
         email: dati.get("email"),
-        messaggio: dati.get("messaggio")
+        messaggio: dati.get("messaggio"),
+        telefono: dati.get("telefono")
     };
 
     try {
@@ -172,6 +173,7 @@ window.addEventListener("DOMContentLoaded", () => {
             const obj = JSON.parse(datiSalvati);
             form.querySelector('[name="nome"]').value = obj.nome || "";
             form.querySelector('[name="email"]').value = obj.email || "";
+            form.querySelector('[name="telefono"]').value = obj.telefono || "";
             charCount.textContent = obj.messaggio ? obj.messaggio.length : "0";
         }
     }

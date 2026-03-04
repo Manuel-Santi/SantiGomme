@@ -170,8 +170,13 @@ const contactValidators = [
     .trim()
     .notEmpty()
     .withMessage("Il messaggio è obbligatorio.")
-    .isLength({ min: 10, max: 2000 })
-    .withMessage("Il messaggio deve essere tra 10 e 2000 caratteri."),
+    .isLength({ min: 1, max: 2000 })
+    .withMessage("Il messaggio deve essere tra 1 e 2000 caratteri."),
+  body("telefonp")
+    .isString()
+    .trim()
+    .notEmpty()
+    .isLength({ min: 10 })
 ];
 
 app.post("/api/contatti", contactLimiter, contactValidators, async (req, res, next) => {
