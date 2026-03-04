@@ -4,22 +4,59 @@
     const accettaBtn = document.getElementById('accettaCookie');
     const rifiutaBtn = document.getElementById('rifiutaCookie');
     const personalizzaBtn = document.getElementById('personalizzaCookie');
+    const personalizzaModal = document.getElementById("personalizzaModal");
+    const chiudiModal = document.getElementById("chiudiModal");
+    const cookieForm = document.getElementById("cookieForm");
 
-    if (!localStorage.getItem('cookieConsent')) {
+    // Mostra banner solo se non c'è già il cookie "necessario"
+    if (!localStorage.getItem('cookieNecessario')) {
         setTimeout(() => cookieBanner.style.display = 'block', 1000);
     }
 
-    const setConsent = (type) => {
-        localStorage.setItem('cookieConsent', type);
-        localStorage.setItem('cookieConsentDate', new Date().toISOString());
+    const setConsent = (consent) => {
+        // Cookie necessario: sempre attivo
+        localStorage.setItem('cookieNecessario', true);
+
+        // Cookie opzionali
+        if(consent.datiPersonali) localStorage.setItem('cookieDatiPersonali', true);
+        else localStorage.removeItem('cookieDatiPersonali');
+
+        if(consent.dataConsenso) localStorage.setItem('cookieDataConsenso', new Date().toISOString());
+        else localStorage.removeItem('cookieDataConsenso');
+
         cookieBanner.style.display = 'none';
-        console.log(type === 'all' ? 'All cookies accepted' : 'Only necessary cookies');
+        personalizzaModal.style.display = 'none';
+
+        console.log("Consentimento salvato:", consent);
     };
 
-    accettaBtn.addEventListener('click', () => setConsent('all'));
-    rifiutaBtn.addEventListener('click', () => setConsent('necessary'));
-    personalizzaBtn.addEventListener('click', () => {
-        alert('Funzionalità di personalizzazione cookie in sviluppo.\nPer ora puoi scegliere tra "Accetta tutti" o "Solo necessari".');
+    // Pulsanti rapidi
+    accettaBtn.addEventListener('click', () => setConsent({
+        datiPersonali: true,
+        dataConsenso: true
+    }));
+
+    rifiutaBtn.addEventListener('click', () => setConsent({
+        datiPersonali: false,
+        dataConsenso: false
+    }));
+
+    personalizzaBtn.addEventListener('click', () => personalizzaModal.style.display = 'block');
+    chiudiModal.addEventListener('click', () => personalizzaModal.style.display = 'none');
+
+    // Salvataggio preferenze dal modal
+    cookieForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(cookieForm);
+        setConsent({
+            datiPersonali: formData.has('datiPersonali'),
+            dataConsenso: formData.has('dataConsenso')
+        });
+    });
+
+    // Chiudi cliccando fuori dal modal
+    window.addEventListener('click', (e) => {
+        if(e.target === personalizzaModal) personalizzaModal.style.display = 'none';
     });
 })();
 
@@ -89,6 +126,12 @@ form.addEventListener("submit", async (e) => {
         if (res.ok && data.success) {
             risposta.className = "alert alert-success mt-3";
             risposta.textContent = "Messaggio inviato correttamente! Ti risponderemo al più presto.";
+
+            // Salvataggio dei dati solo se i cookie dati personali sono accettati
+            if (localStorage.getItem("cookieDatiPersonali")) {
+                localStorage.setItem("datiPersonaliForm", JSON.stringify(obj));
+            }
+
             form.reset();
             charCount.textContent = "0";
             form.classList.remove("was-validated");
@@ -120,4 +163,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             });
         }
     });
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("cookieDatiPersonali")) {
+        const datiSalvati = localStorage.getItem("datiPersonaliForm");
+        if (datiSalvati) {
+            const obj = JSON.parse(datiSalvati);
+            form.querySelector('[name="nome"]').value = obj.nome || "";
+            form.querySelector('[name="email"]').value = obj.email || "";
+            charCount.textContent = obj.messaggio ? obj.messaggio.length : "0";
+        }
+    }
 });
