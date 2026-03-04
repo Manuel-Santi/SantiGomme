@@ -172,8 +172,7 @@ a:hover {
   <button id="revocaConsensoCookie" class="btn btn-outline-danger btn-sm mt-2 mb-3">Revoca consenso cookie</button>
   <script>
     document.getElementById('revocaConsensoCookie').addEventListener('click', function() {
-      localStorage.removeItem('cookieConsent');
-      localStorage.removeItem('cookieConsentDate');
+      localStorage.clear()
       alert('Consenso revocato. Il banner dei cookie verrà mostrato nuovamente alla prossima visita.');
       window.location.reload();
     });
