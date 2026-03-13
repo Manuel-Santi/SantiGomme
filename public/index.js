@@ -197,3 +197,85 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 });
+
+// Form Preventivo
+const formPrev = document.getElementById("formPreventivo");
+const rispostaPrev = document.getElementById("rispostaPreventivo");
+const prevSubmitBtn = document.getElementById("prevSubmitBtn");
+const prevSubmitText = document.getElementById("prevSubmitText");
+const prevSubmitSpinner = document.getElementById("prevSubmitSpinner");
+
+formPrev.querySelectorAll("input, textarea").forEach(field => {
+    field.addEventListener("blur", () => {
+        if (field.type === "file" || field.type === "checkbox") return;
+        field.classList.toggle("is-valid", field.checkValidity());
+        field.classList.toggle("is-invalid", !field.checkValidity());
+    });
+});
+
+formPrev.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    rispostaPrev.className = "";
+    rispostaPrev.textContent = "";
+
+    if (!formPrev.checkValidity()) {
+        formPrev.classList.add("was-validated");
+        return;
+    }
+
+    if (!document.getElementById("prevPrivacy").checked) {
+        rispostaPrev.className = "alert alert-warning mt-3";
+        rispostaPrev.textContent = "Devi accettare la privacy policy per inviare la richiesta.";
+        return;
+    }
+
+    const librettoInput = document.getElementById("prevLibretto");
+    if (librettoInput.files.length === 0) {
+        rispostaPrev.className = "alert alert-warning mt-3";
+        rispostaPrev.textContent = "Allega la foto del libretto del mezzo.";
+        return;
+    }
+
+    const file = librettoInput.files[0];
+    if (file.size > 5 * 1024 * 1024) {
+        rispostaPrev.className = "alert alert-warning mt-3";
+        rispostaPrev.textContent = "Il file non può superare i 5 MB.";
+        return;
+    }
+
+    prevSubmitBtn.disabled = true;
+    prevSubmitText.textContent = "Invio in corso...";
+    prevSubmitSpinner.style.display = "inline-block";
+
+    const formData = new FormData(formPrev);
+
+    try {
+        const res = await fetch("/api/preventivo", {
+            method: "POST",
+            credentials: "same-origin",
+            body: formData
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+            rispostaPrev.className = "alert alert-success mt-3";
+            rispostaPrev.textContent = "Richiesta preventivo inviata! Ti contatteremo al più presto.";
+            formPrev.reset();
+            formPrev.classList.remove("was-validated");
+            formPrev.querySelectorAll(".is-valid, .is-invalid").forEach(el => el.classList.remove("is-valid", "is-invalid"));
+        } else {
+            rispostaPrev.className = "alert alert-danger mt-3";
+            rispostaPrev.textContent = data.message || "Errore nell'invio della richiesta.";
+        }
+    } catch (err) {
+        rispostaPrev.className = "alert alert-danger mt-3";
+        rispostaPrev.textContent = "Errore di connessione al server. Riprova più tardi.";
+        console.error(err);
+    } finally {
+        prevSubmitBtn.disabled = false;
+        prevSubmitText.textContent = "Richiedi preventivo";
+        prevSubmitSpinner.style.display = "none";
+    }
+});

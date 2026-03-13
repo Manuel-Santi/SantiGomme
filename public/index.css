@@ -129,11 +129,16 @@ h1, h2, h3 {
 
 /* Logos */
 
+.logo-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
 .logo-marchio {
     opacity: 0.7;
     transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
-    max-width: 40%;
-    max-height: 40%;
+    max-width: 150px;
+    max-height: 80px;
     object-fit: contain;
 }
 
@@ -369,6 +374,30 @@ a {
         transform: none;
         opacity: 0.7;
     }
+}
+
+/* Preventivo Box */
+
+.preventivo-box {
+    background: linear-gradient(135deg, #f0f7ff, #e9f3ff);
+    border: 1px solid #cce0ff;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.preventivo-box h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.preventivo-box .form-control,
+.preventivo-box .form-check-input {
+    border-color: #b8d4f0;
+}
+
+.preventivo-box .form-control:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.15);
 }
 
 .modal {
