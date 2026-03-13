@@ -17,7 +17,6 @@ const { body, matchedData, validationResult } = require("express-validator");
 const xss = require("xss");
 const hpp = require("hpp");
 const multer = require("multer");
-const fs = require("fs");
 
 const app = express();
 app.set('trust proxy', 1);
@@ -37,8 +36,9 @@ if (missingEnvKeys.length > 0) {
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Multer config for file uploads (preventivo)
+// Usa memory storage per compatibilità con serverless (Vercel)
 const upload = multer({
-  dest: path.join(__dirname, "uploads"),
+  storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
   fileFilter: (req, file, cb) => {
     const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif", "application/pdf"];
@@ -274,15 +274,12 @@ app.post("/api/preventivo", contactLimiter, upload.single("libretto"), async (re
 
     // Validazioni base
     if (!nome || nome.trim().length < 2 || nome.trim().length > 100) {
-      if (file) fs.unlink(file.path, () => {});
       return res.status(400).json({ success: false, message: "Il nome è obbligatorio (2-100 caratteri)." });
     }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      if (file) fs.unlink(file.path, () => {});
       return res.status(400).json({ success: false, message: "Inserisci un'email valida." });
     }
     if (!misura || misura.trim().length < 5) {
-      if (file) fs.unlink(file.path, () => {});
       return res.status(400).json({ success: false, message: "Inserisci la misura degli pneumatici." });
     }
     if (!file) {
@@ -301,9 +298,8 @@ app.post("/api/preventivo", contactLimiter, upload.single("libretto"), async (re
       whatsappLink = `https://wa.me/${numClean}`;
     }
 
-    // Leggi il file per allegarlo all'email
-    const fileContent = fs.readFileSync(file.path);
-    const fileBase64 = fileContent.toString("base64");
+    // Con memoryStorage, il file è in memoria come Buffer (file.buffer)
+    const fileBase64 = file.buffer.toString("base64");
 
     await resend.emails.send({
       from: `${appName} <onboarding@resend.dev>`,
@@ -331,9 +327,6 @@ app.post("/api/preventivo", contactLimiter, upload.single("libretto"), async (re
       }],
     });
 
-    // Elimina il file temporaneo
-    fs.unlink(file.path, () => {});
-
     logEvent("INFO", "Preventivo inviato con successo", {
       nome: nomeClean,
       email: maskEmail(emailClean),
@@ -346,8 +339,6 @@ app.post("/api/preventivo", contactLimiter, upload.single("libretto"), async (re
       message: "Richiesta preventivo inviata correttamente!",
     });
   } catch (error) {
-    // Cleanup file in caso di errore
-    if (req.file) fs.unlink(req.file.path, () => {});
     return next(error);
   }
 });
