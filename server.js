@@ -16,6 +16,7 @@ const rateLimit = require("express-rate-limit");
 const { body, matchedData, validationResult } = require("express-validator");
 const xss = require("xss");
 const hpp = require("hpp");
+const multer = require("multer");
 
 const app = express();
 app.set('trust proxy', 1);
@@ -33,6 +34,21 @@ if (missingEnvKeys.length > 0) {
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Multer config for file uploads (preventivo)
+// Usa memory storage per compatibilità con serverless (Vercel)
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
+  fileFilter: (req, file, cb) => {
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif", "application/pdf"];
+    if (allowed.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Tipo di file non supportato. Usa JPG, PNG o PDF."));
+    }
+  }
+});
 
 function logEvent(level, message, data = {}) {
   const payload = {
@@ -250,6 +266,83 @@ app.post("/api/contatti", contactLimiter, contactValidators, async (req, res, ne
   }
 });
 
+// Preventivo rapido con upload libretto
+app.post("/api/preventivo", contactLimiter, upload.single("libretto"), async (req, res, next) => {
+  try {
+    const { nome, email, telefono, misura, note } = req.body;
+    const file = req.file;
+
+    // Validazioni base
+    if (!nome || nome.trim().length < 2 || nome.trim().length > 100) {
+      return res.status(400).json({ success: false, message: "Il nome è obbligatorio (2-100 caratteri)." });
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ success: false, message: "Inserisci un'email valida." });
+    }
+    if (!misura || misura.trim().length < 5) {
+      return res.status(400).json({ success: false, message: "Inserisci la misura degli pneumatici." });
+    }
+    if (!file) {
+      return res.status(400).json({ success: false, message: "Allega la foto del libretto del mezzo." });
+    }
+
+    const nomeClean = sanitizeText(nome);
+    const emailClean = sanitizeText(email);
+    const misuraClean = sanitizeText(misura);
+    const noteClean = note ? sanitizeText(note) : "";
+    const telefonoClean = telefono ? sanitizeText(telefono) : "";
+
+    let whatsappLink = "";
+    if (telefonoClean) {
+      const numClean = telefonoClean.replace(/[^\d+]/g, "").replace(/^\+/, "");
+      whatsappLink = `https://wa.me/${numClean}`;
+    }
+
+    // Con memoryStorage, il file è in memoria come Buffer (file.buffer)
+    const fileBase64 = file.buffer.toString("base64");
+
+    await resend.emails.send({
+      from: `${appName} <onboarding@resend.dev>`,
+      to: process.env.EMAIL_USER,
+      subject: `[Preventivo] Richiesta da ${nomeClean} - ${misuraClean}`,
+      replyTo: emailClean,
+      text: [
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+        "RICHIESTA PREVENTIVO RAPIDO",
+        "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
+        "",
+        `Nome: ${nomeClean}`,
+        `Email: ${emailClean}`,
+        telefonoClean ? `Telefono: ${telefonoClean}` : "",
+        whatsappLink ? `WhatsApp: ${whatsappLink}` : "",
+        `Misura pneumatici: ${misuraClean}`,
+        noteClean ? `Note: ${noteClean}` : "",
+        `Data: ${new Date().toLocaleString("it-IT", { timeZone: "Europe/Rome" })}`,
+        "",
+        "Il libretto del mezzo è allegato a questa email.",
+      ].filter(line => line !== "").join("\n"),
+      attachments: [{
+        filename: file.originalname,
+        content: fileBase64,
+      }],
+    });
+
+    logEvent("INFO", "Preventivo inviato con successo", {
+      nome: nomeClean,
+      email: maskEmail(emailClean),
+      misura: misuraClean,
+      ip: req.ip,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Richiesta preventivo inviata correttamente!",
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     status: "ok",
@@ -268,6 +361,17 @@ app.use((req, res) => {
 });
 
 app.use((error, req, res, next) => {
+  // Gestione errori multer
+  if (error instanceof multer.MulterError) {
+    if (error.code === "LIMIT_FILE_SIZE") {
+      return res.status(400).json({ success: false, message: "Il file non può superare i 5 MB." });
+    }
+    return res.status(400).json({ success: false, message: "Errore nel caricamento del file." });
+  }
+  if (error.message && error.message.includes("Tipo di file non supportato")) {
+    return res.status(400).json({ success: false, message: error.message });
+  }
+
   logEvent("ERROR", "Errore server", {
     message: error.message,
     stack: isProduction ? undefined : error.stack,
