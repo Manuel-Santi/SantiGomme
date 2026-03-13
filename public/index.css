@@ -313,6 +313,15 @@ a {
     text-decoration: none;
 }
 
+/* Touch target accessibility per link in form labels */
+.form-check-label a,
+label a {
+    padding: 4px 2px;
+    display: inline-block;
+    min-height: 24px;
+    line-height: 1.2;
+}
+
 .map-container iframe {
   width: 100%;
   height: 100%;
