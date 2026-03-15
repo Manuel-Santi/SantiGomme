@@ -39,6 +39,7 @@ EMAIL_USER=info@lasantigommesrl.it
 ## Documentazione
 
 Consulta [DOCUMENTAZIONE.md](DOCUMENTAZIONE.md) per la documentazione completa.
+Per il passaggio di proprieta al cliente usa [CHECKLIST_PASSAGGIO_CLIENTE.md](CHECKLIST_PASSAGGIO_CLIENTE.md).
 
 ## Sicurezza
 
