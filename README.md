@@ -68,4 +68,4 @@ Per il passaggio di proprieta al cliente usa [CHECKLIST_PASSAGGIO_CLIENTE.md](CH
 
 Copyright (c) 2026 Enrico Jaupi, Davide Albo
 
-All rights reserved.
+All rights reserved..
